@@ -6,7 +6,7 @@
     
     <xsl:param name="page.width" select="'8.25in'"/> 
     <xsl:param name="page.height" select="'10.75in'"/> 
-
+    
     <xsl:attribute-set name="monospace.properties">
         <!--<xsl:attribute name="line-height">0.85em</xsl:attribute>-->
         <xsl:attribute name="font-size">0.9em</xsl:attribute>
