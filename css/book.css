@@ -5,6 +5,10 @@ body {
   font-family: verdana, arial, helvetica, sans-serif;
 }
 
+a {
+  color: #00f;
+}
+
 p {
   text-align: justify;
 }
@@ -23,3 +27,21 @@ table td {
     padding: 0.2em;
 }
 
+#chapter-content h1 {
+  font-size: 2em;
+}
+
+#chapter-content h1 a {
+  color: #000;
+  text-decoration: none;
+}
+
+#chapter-content h2 a {
+  color: #000;
+  text-decoration: none;
+}
+
+#chapter-content h3 a {
+  color: #000;
+  text-decoration: none;
+}

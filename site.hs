@@ -33,5 +33,7 @@ main = hakyll $ do
 chapterOptions = defaultWriterOptions {
                    writerNumberSections  = True,
                    writerSectionDivs     = True,
-                   writerTableOfContents = True
+                   writerStandalone      = True,
+                   writerTableOfContents = True,
+                   writerTemplate        = "<b>Table of contents</b>\n$toc$\n$body$"
                  }
