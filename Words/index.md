@@ -1,36 +1,10 @@
-Chapter 2. Words
+---
+title: Words
+---
 
-[Prev](chap-intro.xhtml)
+# Words
 
-[Next](chap-ngrams.xhtml)
-
-* * * * *
-
-## Chapter 2. Words
-
-**Table of Contents**
-
-[2.1. Introduction](chap-words.xhtml#sec-words-intro)
-
-[2.2. Playing with words](chap-words.xhtml#sec-words-playwords)
-
-[2.3. From words to sentences](chap-words.xhtml#sec-words-to-sentences)
-
-[2.4. A note on tokenization](chap-words.xhtml#sec-words-tokenization)
-
-[2.5. Word lists](chap-words.xhtml#sec-words-lists)
-
-[2.6. Storing functions in a
-file](chap-words.xhtml#sec-words-source-file)
-
-[2.7. Word frequency lists](chap-words.xhtml#sec-words-freq-list)
-
-[2.8. Monads](chap-words.xhtml#idp453264)
-
-[2.9. Reading a text
-corpus](chap-words.xhtml#sec-words-read-text-corpus)
-
-## 2.1. Introduction
+##  Introduction
 
 Words are the most fundamental building blocks of our language. Although
 they may look simple on the surface, they are very ingenious devices
@@ -69,7 +43,7 @@ now, you should only know about two:
 
 Now, with that out of the way, let's get some work done.
 
-## 2.2. Playing with words
+##  Playing with words
 
 Written words consist of characters. We can write down characters in
 Haskell with single quotes. If you type in a character in *ghci*, it
@@ -287,7 +261,7 @@ palindrome "racecar" = True
 Congratulations, you have made your first function, which is in essence
 a small program!
 
-## 2.3. From words to sentences
+##  From words to sentences
 
 So far, we have looked at words in isolation. However, in language,
 words are often combined to form a higher level of meaning
@@ -574,7 +548,7 @@ sentences, or sentences in a text). This happens very often when you
 write Haskell programs: lots of functions are generic and can be reused
 for other tasks.
 
-## 2.4. A note on tokenization
+##  A note on tokenization
 
 When dealing with real-world text, it is usually not neatly split in
 sentences and tokens. For example, consider this book - punctuation is
@@ -734,7 +708,7 @@ Prelude> splitTokenize "This is Jack .\nHe is a Haskeller ."
 [["This","is","Jack","."],["He","is","a","Haskeller","."]]
 ~~~~
 
-## 2.5. Word lists
+##  Word lists
 
 In the following two sections, we will introduce two prototypical tasks
 related to words. The first is to make a word (or actually token) list,
@@ -1100,7 +1074,7 @@ fromList ["blue","red"]
 You have done it! You are now not only able to make a function that
 creates a word list, but also one that is performant.
 
-### 2.5.1. Exercises
+### Exercises
 
 1.  To measure the vocabulary of a writer, a so-called type-token ratio
     can be calculated. This is the number of distinct tokens occurring
@@ -1121,7 +1095,7 @@ creates a word list, but also one that is performant.
     tokens. You can use the *Data.Set.size* function to get the number
     of elements in a set.
 
-## 2.6. Storing functions in a file
+##  Storing functions in a file
 
 Now that we are writing longer and longer functions, it becomes more
 convenient to define functions in a file rather than the **ghci**
@@ -1167,7 +1141,7 @@ wordSet = foldl (\s e -> Data.Set.insert e s) Data.Set.empty
 From now on, we assume that examples are written to a text file, except
 when the *Prelude\>* occurs in the example.
 
-## 2.7. Word frequency lists
+##  Word frequency lists
 
 The word list function that we built in the previous section works is
 useful for various tasks, like calculating the type-token ratio for a
@@ -1426,7 +1400,7 @@ freqList :: (Ord k) => [k] -> Data.Map.Map k Int
 freqList = foldl countElem Data.Map.empty
 ~~~~
 
-## 2.8. Monads
+##  Monads
 
 In the next section you will see how to read real text corpora using the
 so-called IO monad. Before diving into the IO monad, we will give a
@@ -1599,7 +1573,7 @@ lookupOrder customers orders customer = do
     Data.Map.lookup customerId orders
 ~~~~
 
-## 2.9. Reading a text corpus
+##  Reading a text corpus
 
 Up to this point we have been using very artificial text corpora. At
 most a few sentences. But you are in it for the real deal, right? Lucky
@@ -1765,12 +1739,3 @@ Congratulations! This was your first venture into the world of corpus
 statistics!
 
 Todo: Zipfian distribution.
-
-* * * * *
-
-  -------------------------- --------------------- ---------------------------
-  [Prev](chap-intro.xhtml)                         [Next](chap-ngrams.xhtml)
-  Chapter 1. Introduction    [Home](index.xhtml)   Chapter 3. N-grams
-  -------------------------- --------------------- ---------------------------
-
-
