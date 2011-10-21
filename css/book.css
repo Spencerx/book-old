@@ -1,0 +1,25 @@
+body {
+  width: 800px;
+  margin: 0px auto;
+
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+p {
+  text-align: justify;
+}
+table {
+    border: 1px solid #000;
+    border-width: 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+table th {
+    padding: 0.2em;
+}
+
+table td {
+    padding: 0.2em;
+}
+
