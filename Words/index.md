@@ -1079,11 +1079,7 @@ creates a word list, but also one that is performant.
     in a text (types) divided by the total number of tokens in that
     text.
 
-    **Equation 2.1. Type-token ratio**
-
-    tt-ratio = types tokens
-
-    \
+    $tt-ratio = \frac{types}{tokens}$
 
     For instance the phrase "to be or not to be" contains six tokens and
     four types (*to*, *be*, *or*, *not*). The type-token ratio of this

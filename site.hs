@@ -5,6 +5,7 @@ module Main where
 import Control.Arrow ((>>>), arr)
 import Data.Monoid (mempty)
 import Text.Pandoc (WriterOptions(..), defaultParserState, defaultWriterOptions)
+import Text.Pandoc.Shared (HTMLMathMethod(..))
 
 import Hakyll
 
@@ -31,6 +32,7 @@ main = hakyll $ do
       >>> relativizeUrlsCompiler
 
 chapterOptions = defaultWriterOptions {
+                   writerHTMLMathMethod  = MathML Nothing,
                    writerNumberSections  = True,
                    writerSectionDivs     = True,
                    writerStandalone      = True,
