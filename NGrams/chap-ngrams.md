@@ -103,7 +103,7 @@ list of words or tokens (whatever you prefer). For the sake of legacy,
 we will stick to a list of tokens representing the sentence Colorless
 green ideas sleep furiously:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> ["Colorless", "green", "ideas", "sleep", "furiously"]
 ["Colorless","green","ideas","sleep","furiously"]
 ~~~~
@@ -117,7 +117,7 @@ like to obtain a list of lists of two words (bigrams). Represented in
 such a way, the list of bigrams in the sentence Colorless green ideas
 sleep furiously would look like this:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 [["Colorless","green"],["green","ideas"],["ideas","sleep"],["sleep","furiously"]]
 ~~~~
 
@@ -135,7 +135,7 @@ bigram, that is, we need to isolate the first two items of the list of
 words. In its prelude, Haskell defines a function named take that seems
 to suit our needs:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type take 
 take :: Int -> [a] -> [a]
 ~~~~
@@ -145,7 +145,7 @@ of some type a. Given these arguments, it returns the first n elements
 of a list of as. Thus, passing it the number two and a list of words
 should give us... our first bigram:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> take 2 ["Colorless", "green", "ideas", "sleep", "furiously"]
 ["Colorless","green"]
 ~~~~
@@ -158,14 +158,14 @@ to the right? That is, how do we extract the second and third word in
 the list, instead of the first and second? A possible would be to use
 Haskell's !! operator:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :t (!!)
 (!!) :: [a] -> Int -> a
 ~~~~
 
 This operator takes a list of as, and returns the nth element;
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> ["Colorless", "green", "ideas", "sleep", "furiously"] !! 1 
 "green"
 Prelude> ["Colorless", "green", "ideas", "sleep", "furiously"] !! 2 
@@ -175,7 +175,7 @@ Prelude> ["Colorless", "green", "ideas", "sleep", "furiously"] !! 2
 Great, this gives us the two words that make up the second bigram. Now
 all we have to do is stuff them together in a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> ["Colorless", "green", "ideas", "sleep", "furiously"] !! 1 : 
 ["Colorless", "green", "ideas", "sleep", "furiously"] !! 2 : [] 
 ["green","ideas"]
@@ -190,7 +190,7 @@ and second word in the list again, after getting rid of the (previous)
 first word. In other words, we could look at the first two words of the
 tail of the list of words:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> take 2 (tail ["Colorless", "green", "ideas", "sleep", "furiously"])
 ["green","ideas"]
 ~~~~
@@ -200,14 +200,14 @@ that? Well, we could apply the same trick over and over again. We can
 look at the first two words of the tail of the tails of the list of
 words:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> take 2 (tail (tail ["Colorless", "green", "ideas", "sleep", "furiously"]))
 ["ideas","sleep"]
 ~~~~
 
 ... and the tail of the tail of the tail of the list of words:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> take 2 (tail (tail (tail ["Colorless", "green", "ideas", "sleep", "furiously"])))
 ["sleep","furiously"]
 ~~~~
@@ -245,7 +245,7 @@ Moreover, it stuffs the two word lists in a larger list on the fly (we
 told you the list stuff would come in for free, didn't we?). But wait,
 will this work? Well, let us put it to a test:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram ["Colorless", "green", "ideas", "sleep", "furiously"]
 [["Colorless","green"],["green","ideas"],["ideas","sleep"],["sleep","furiously"],
 ["furiously"],[],*** Exception: Prelude.tail: empty list
@@ -279,7 +279,7 @@ bigram xs = if length(xs) >= 2
 
 This should solve our problems:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram ["Colorless", "green", "ideas", "sleep", "furiously"]
 [["Colorless","green"],["green","ideas"],["ideas","sleep"],["sleep","furiously"]]
 ~~~~
@@ -291,7 +291,7 @@ this works with an artificial example. First we will recursively apply
 the bigram function until it is applied to a list that has less than two
 elements:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram [1,2,3,4]
 bigram [1,2,3,4] = [1,2] : bigram (tail [1,2,3,4])
 bigram [2,3,4] = [2,3] : bigram (tail [2,3,4])
@@ -307,7 +307,7 @@ called the bigram function from within itself for three times, and as we
 have just found the result to its third and last self call, we can now
 reversely construct the result of the outermost function call:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 bigram [3,4] = [3,4] : []
 bigram [2,3,4] = [2,3] : [3,4] : []
 bigram [1,2,3,4] = [1,2] : [2,3] : [3,4] : []
@@ -346,7 +346,7 @@ bigram), Haskell will match this call with the stop condition. The
 result of this call will simply an empty list. Lets first proof that
 this indeed works:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram ["Colorless", "green", "ideas", "sleep", "furiously"]
 [["Colorless","green"],["green","ideas"],["ideas","sleep"],["sleep","furiously"]]
 ~~~~
@@ -354,7 +354,7 @@ Prelude> bigram ["Colorless", "green", "ideas", "sleep", "furiously"]
 It did! To make the working of the use of pattern matching more
 insightful we can again write out an artificial example in steps:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram [1,2,3,4]
 bigram [1,2,3,4] = [1,2] : bigram (tail [1,2,3,4])
 bigram [2,3,4] = [2,3] : bigram (tail [2,3,4])
@@ -384,7 +384,7 @@ bigram xs  = take 2 xs : bigram (tail xs)
 
 Secondly, our function fails if we apply it to an empty list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram []
 [[]*** Exception: Prelude.tail: empty list
 ~~~~
@@ -406,7 +406,7 @@ This new pattern basically states that the list of a bigrams of an empty
 word list is in turn an empty list. This assures that our function will
 not fail when applied to an empty list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> bigram []
 []
 ~~~~
@@ -435,7 +435,7 @@ applications of a bigram language model!
     Running your function on *["Colorless", "green", "ideas", "sleep",
     "furiously"]* should give the following output:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> skipBigrams ["Colorless", "green", "ideas", "sleep", "furiously"]
 [("Colorless","green"),("Colorless","ideas"),("Colorless","sleep"),
 ("Colorless","furiously"),("green","ideas"),("green","sleep"),
@@ -540,7 +540,7 @@ Now that we know how to identify collocations, we can apply our
 knowledge to the Brown corpus. First we have to read in the contents of
 this corpus like we learned in the previous chapter:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 ~~~~
@@ -548,7 +548,7 @@ this corpus like we learned in the previous chapter:
 Good! From here on, let us first obtain a list of bigrams for this
 corpus:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> let bgs = bigrams (words c)
 *Main> head bgs
 ["The","Fulton"]
@@ -557,7 +557,7 @@ corpus:
 As a sanity check, we could verify whether we indeed obtained all the
 bigrams in the corpus. For a corpus of n words, we expect n-1 bigrams:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> length (words c)
 1165170
 *Main> length bgs
@@ -570,7 +570,7 @@ determine the observed chance of observing it. We could start by
 determining the frequency of each bigram. We can reuse the freqList
 function defined in the previous chapter to so:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> Data.Map.lookup ["United","States"] (freqList bgs)
 Just 392
 ~~~~
@@ -603,7 +603,7 @@ shorter than *n*. Instead, we add a guard that ends the recursion if we
 cannot get the proper number of elements from the list. This function
 works as you would expect:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> ngrams 3 [1..10]
 [[1,2,3],[2,3,4],[3,4,5],[4,5,6],
  [5,6,7],[6,7,8],[7,8,9],[8,9,10]]
@@ -639,7 +639,7 @@ Let's go through each of these patterns to compose a declarative
 definition of `ngrams`{.function}. First, we extract the tails from the
 list, using the `tails`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> import Data.List
 Prelude Data.List> let sent = ["Colorless", "green", "ideas", "sleep", "furiously"]
 Prelude Data.List> tails sent
@@ -654,7 +654,7 @@ Since `take`{.function} requires two arguments, we use currying to bind
 the first argument. For now. we will use `take 2`{.function} to extract
 bigrams:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> map (take 2) $ tails sent
 [["Colorless","green"],["green","ideas"],["ideas","sleep"],["sleep","furiously"],["furiously"],[]]
 ~~~~
@@ -667,7 +667,7 @@ any element that is not of the given length. To accomplish this, we
 apply some currying awesomeness. Remember that we can convert infix
 operators to prefix operators by adding parentheses:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> (==) 2 2
 True
 Prelude Data.List> (==) 2 3
@@ -678,7 +678,7 @@ This shows that `==`{.function} is just an ordinary function, that just
 happens to use the infix notation for convenience. Since this is an
 ordinary function, we can also apply currying:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> let isTwo = (==) 2
 Prelude Data.List> isTwo 2
 True
@@ -690,7 +690,7 @@ Ok, so we want to check whether a list has two elements, so we could
 just apply `isTwo`{.function} to the result of the `length`{.function}
 function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> isTwo (length ["Colorless","green"])
 True
 Prelude Data.List> isTwo (length [])
@@ -706,7 +706,7 @@ hasLengthTwo l = isTwo (length l)
 Since this function follows the canonical form *f (g x)*, we can use
 function composition:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> let hasLengthTwo = isTwo . length
 Prelude Data.List> hasLengthTwo ["Colorless","green"]
 True
@@ -715,7 +715,7 @@ True
 Our filtering expression, *(==) 2 . length*, turns out to be quite
 compact. Time to test this with our not-yet-correct list of bigrams:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> filter ((==) 2 . length) $ map (take 2) $ tails sent
 [["Colorless","green"],["green","ideas"],["ideas","sleep"],["sleep","furiously"]]
 ~~~~
@@ -745,7 +745,7 @@ to combine expressions resulting in that type. The list type also
 belongs to the monad type class. In GHCi, you can use the **:info**
 command to list the type classes to which a type belongs:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :i []
 data [] a = [] | a : [a]    -- Defined in GHC.Types
 instance Eq a => Eq [a] -- Defined in GHC.Classes
@@ -778,7 +778,7 @@ calculate the immediate predecessor and successor of every number in the
 list *[0..9]*. In this case, we could use the function
 `\x -> [x-1,x+1]`{.function} in the list monad:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 do
   l  <- [0..9]
@@ -798,7 +798,7 @@ results of these applications is concatenated.
 Experimenting with list monads may give you results that may be
 surprising at first sight. For instance:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 do
   l <- [0..9]
@@ -814,7 +814,7 @@ corresponding function is
 `foldr`{.function} still traverses the list bound to *l*, the monadic
 computation is equal to:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> foldr ((++) . (\_ -> [42,11])) [] [0..9]
 [42,11,42,11,42,11,42,11,42,11,42,11,42,11,42,11,42,11,42,11]
 ~~~~
@@ -823,7 +823,7 @@ We can also extract bigrams using the list monad. Given a list of tails,
 we could extract the first two words of each tail using
 `take`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> import Data.List
 Prelude Data.List> let sent = ["Colorless", "green", "ideas", "sleep", "furiously"]
 Prelude Data.List> :{
@@ -840,7 +840,7 @@ every *take 2 t* expression, we cannot directly identify the n-grams
 anymore. This is easily remedied by wrapping the result of
 `take`{.function} in a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> :{
 do
   t <- tails sent
@@ -855,7 +855,7 @@ definitions of `ngrams`{.function} we have to exclude lists that do not
 have the requested number of elements. We could, as we did previously,
 filter out these members using `filter`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> :{
 filter ((==) 2 . length) $ do
   t <- tails sent
@@ -869,7 +869,7 @@ But that would not be a very monadic way to perform this task. It would
 be nice if we could just choose elements to our liking. Such a (monadic)
 choice function exists, namely `Control.Monad.guard`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List> import Control.Monad
 Prelude Data.List Control.Monad> :type guard
 guard :: MonadPlus m => Bool -> m ()
@@ -882,7 +882,7 @@ importing *Control.Monad*). Instead of going into the working of
 `MonadPlus`{.classname} now, we will perform a behavioral study of
 `guard`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List Control.Monad> :{
 do
   l <- [0..9]
@@ -897,7 +897,7 @@ from *[0..9]* that are even. Of course, we could as well use
 `guard`{.function} in our bigram extraction to filter lists that are not
 of a certain length:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude Data.List Control.Monad> :{
 do
   t <- tails sent
@@ -942,7 +942,7 @@ preferable.
 You may have noticed that something curious goes on in Haskell. For
 instance, consider the following GHCi session:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> take 10 $ [0..]
 [0,1,2,3,4,5,6,7,8,9]
 ~~~~
@@ -952,14 +952,14 @@ infinity. Obviously, it is impossible to store an infinite list in
 finite memory. Haskell does not apply some simple trick, since it also
 works in less trivial cases. For instance:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> take 10 $ filter even [0..]
 [0,2,4,6,8,10,12,14,16,18]
 ~~~~
 
 This also works for your own predicates:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let infinite n = n : infinite (n + 1)
 Prelude> take 3 $ infinite 0
 [0,1,2,3]
@@ -1057,7 +1057,7 @@ elements as in a list. Vectors are provided in Haskell as a part of the
 vector package that can be installed using **cabal**. We can construct a
 Vector from a list and convert a Vector to a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Vector.fromList ["to","or","not","to","be"]
 fromList ["to","or","not","to","be"] :: Data.Vector.Vector
 Prelude> Data.Vector.toList $ Data.Vector.fromList ["to","or","not","to","be"]
@@ -1066,7 +1066,7 @@ Prelude> Data.Vector.toList $ Data.Vector.fromList ["to","or","not","to","be"]
 
 The `(!)`{.function} function is used to access an element:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> (Data.Vector.fromList ["to","or","not","to","be"]) Data.Vector.! 3
 "to"
 ~~~~
@@ -1075,7 +1075,7 @@ There's also a safe access function, `(!?)`{.function}, that wraps the
 element in a Maybe. Nothing is returned when you use an index that is
 'outside' the vector:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> (Data.Vector.fromList ["to","or","not","to","be"]) Data.Vector.! 20
 "*** Exception: ./Data/Vector/Generic.hs:222 ((!)): index out of bounds (20,5)
 Prelude> (Data.Vector.fromList ["to","or","not","to","be"]) Data.Vector.!? 20
@@ -1104,7 +1104,7 @@ construct a suffix array from a list. However, to do this, we need a
 sorting function. The Data.List module contains the `sortBy`{.function}
 function that sorts a list according to some ordering function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type Data.List.sortBy
 Data.List.sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 ~~~~
@@ -1159,7 +1159,7 @@ indices and bind it to `usrtIndex`{.varname}. We construct this list by
 using a range. A range contains the indicated lower bound and upper
 bound, and all integers in between;
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> [0..9]
 [0,1,2,3,4,5,6,7,8,9,10]
 ~~~~
@@ -1170,7 +1170,7 @@ obtain the sorted index (`srtIndex`{.varname}) by using the
 `Data.List.sortBy`{.function} function. This function takes a comparison
 function as its first argument and a list as its second argument:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type Data.List.sortBy
 Data.List.sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 ~~~~
@@ -1241,7 +1241,7 @@ being constructed is in the correct order - since the accumulator
 becomes the tail, a `foldl`{.function} would make the first subarray the
 last in the list. Time to play with our new data type a bit:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> toList $ fromList ["to","be","or","not","to","be"]
 [["be"],
 ["be","or","not","to","be"],
@@ -1255,7 +1255,7 @@ Excellent, just as we want it: we get an ordered list of all n-grams in
 the corpus, for the maximum possible n. We can use this function to
 extract all bigrams:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> filter ((== 2) . length) $ map (take 2) $ toList $ \
   fromList ["to","be","or","not","to","be"]
 ~~~~
@@ -1279,7 +1279,7 @@ elems (SuffixArray d i) = V.map vecAt i
 Note that we can use `Data.Vector.map`{.function} in this case, since it
 maps a function over all elements of vector, returning a vector:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type Data.Vector.map
 Data.Vector.map :: (a -> b) -> V.Vector a -> V.Vector b
 ~~~~
@@ -1398,7 +1398,7 @@ functionality of `binarySearchBounded`{.function} and
 `binarySearchBy`{.function}, Let's give the binary search functionality
 a try:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> binarySearch (V.fromList [1,2,3,5,7,9]) 9
 Just 1
 *Main> binarySearch (V.fromList [1,2,3,5,7,9]) 10
@@ -1411,7 +1411,7 @@ that you would want to write a `contains`{.function} function that
 returns True if an n-gram is in the suffix array, or False otherwise.
 Easy right? Your first attempt may be something like:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> let corpus = ["to","be","or","not","to","be"]
 *Main> binarySearch (elems $ fromList corpus) $ Data.Vector.fromList ["or","not", "to", "be"]
 Just 3
@@ -1419,7 +1419,7 @@ Just 3
 
 Nice, right? But try this example:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> binarySearch (elems $ fromList corpus) $ Data.Vector.fromList ["or","not"]
 Nothing
 ~~~~
@@ -1431,7 +1431,7 @@ That is why the first example worked, while the second did not. So, we
 have to apply the binary search to something that only contains bigrams
 in this case:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :{
 *Main| binarySearch
 *Main|   (Data.Vector.map (Data.Vector.take 2) $ elems $ fromList corpus) $
@@ -1557,7 +1557,7 @@ frequency = frequencyBy compare
 
 This function works as expected:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> frequency (V.fromList [1,3,3,4,7,7,7,10]) 7
 Just 3
 *Main> frequency (V.fromList [1,3,3,4,7,7,7,10]) 5
@@ -1566,7 +1566,7 @@ Nothing
 
 We can use this with our suffix array now:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> let corpus = ["to","be","or","not","to","be"]
 *Main> let sa = fromList corpus
 *Main> containsWithFreq sa $ Data.Vector.fromList ["not"]
@@ -1776,7 +1776,7 @@ This function is straightforward, except perhaps the
 `product`{.function} function. `product`{.function} calculates the
 product of a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type product
 product :: Num a => [a] -> a
 Prelude> product [1,2,3]

@@ -75,7 +75,7 @@ Written words consist of characters. We can write down characters in
 Haskell with single quotes. If you type in a character in *ghci*, it
 will simply echo back the character:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> 'h'
 'h'
 ~~~~
@@ -85,7 +85,7 @@ character evaluates to... a character. We confirm that Haskell agrees
 with us that this actually a character by asking the type with *:type*
 or its shorthand *:t*:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type 'h'
 'h' :: Char    
 ~~~~
@@ -101,14 +101,14 @@ Haskell by enumerating its elements, separated by commas and surrounded
 by square brackets. For instance, the list *1, 2, 3, 4, 5* is written as
 *[1, 2, 3, 4, 5]*. Let's try to make a list of characters:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> ['h','e','l','l','o']
 "hello" 
 ~~~~
 
 Now we are getting somewhere! Let's look at the type of this list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type ['h','e','l','l','o']
 ['h','e','l','l','o'] :: [Char] 
 ~~~~
@@ -120,7 +120,7 @@ evaluation of the second to last example already suggests, there is a
 more convenient notation. We can represent strings by wrapping
 characters in double quotes:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> "hello"
 "hello"
 Prelude> :type "hello"
@@ -132,7 +132,7 @@ with the noble cause of learning some commonly-used Haskell list
 functions. The first function `length`{.function} returns the length of
 a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> length "hello"
 5
 Prelude> length [1,2,3]
@@ -142,7 +142,7 @@ Prelude> length [1,2,3]
 To get a better impression of functions, it is often useful to look at
 its type:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type length
 length :: [a] -> Int 
 ~~~~
@@ -159,7 +159,7 @@ Two other basic list functions are `head`{.function} and
 `tail`{.function}. `head`{.function} returns the first element of a
 list, `tail`{.function} everything but the first element:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> head "hello"
 'h'
 Prelude> tail "hello"
@@ -168,7 +168,7 @@ Prelude> tail "hello"
 
 The type of head is the following:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type head
 head :: [a] -> a
             
@@ -184,7 +184,7 @@ applying `head`{.function} to a list of numbers gives a number, applying
 In analogy, the type of `tail`{.function} should now be easy to
 understand:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type tail
 tail :: [a] -> [a] 
 ~~~~
@@ -197,14 +197,14 @@ admit presenting this function with a bit of joy, since it will allow us
 to write our first little useful Haskell program. As expected,
 `reverse`{.function} reverses the elements of a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> reverse "hello"
 "olleh"
 ~~~~
 
 Olé! And another one:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> reverse "level"
 "level"
 ~~~~
@@ -216,7 +216,7 @@ palindrome. We first need to make a slightly more formal definition of a
 palindrome: a word is a palindrome if it is equal to its reverse. In
 Haskell we can compare values using the `==`{.function} operator:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> "hello" == "hello"
 True
 Prelude> "hello" == "olleh"
@@ -228,7 +228,7 @@ Such a comparison evaluates to *True* if both values are equal, or to
 the *Bool* type. Since `reverse`{.function} also returns a value,
 nothing holds us from using it in comparisons:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> "hello" == reverse "hello"
 False
 Prelude> "level" == reverse "level"
@@ -240,13 +240,13 @@ is a lot of typing. Luckily, we can generalize this into a function.
 Let's replace both words by the symbolic name *word* (but don't execute
 this in **ghci** yet, since it does not know this symbolic name):
 
-~~~~ {.screen}
+~~~~ {.haskell}
 word == reverse word 
 ~~~~
 
 And as a next step, Let's do some magic:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let palindrome word = word == reverse word 
 ~~~~
 
@@ -255,7 +255,7 @@ and binds this argument to the symbolic name *word*. To this function we
 assign the expression *word == reverse word*. Play a little with this
 function to be convinced that it actually works. Some examples:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> palindrome "hello"
 False
 Prelude> palindrome "level"
@@ -268,7 +268,7 @@ If this function is still a mystery to you, it may be useful to write
 down the application of the function stepwise for a word that is not a
 palindrome:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 palindrome "hello"
 palindrome "hello" = "hello" == reverse "hello"
 palindrome "hello" = "hello" == "olleh"
@@ -277,7 +277,7 @@ palindrome "hello" = False
 
 and a word that *is* a palindrome:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 palindrome "racecar"
 palindrome "racecar" = "racecar" == reverse "racecar"
 palindrome "racecar" = "racecar" == "racecar"
@@ -296,7 +296,7 @@ representing words in Haskell, the step towards representing sentences
 should be a minor one. We could, for example, represent sentences in the
 exactly the same way we represented words:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> "The cat is on the mat."
 "The cat is on the mat." 
 ~~~~
@@ -306,7 +306,7 @@ Assume we ask you to give us the first word of a sentence. In the
 previous section, we learned that `head`{.function} can be used to get
 the first element of a list. Let's try to apply that here:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> head "The cat is on the mat."
 'T' 
 ~~~~
@@ -316,7 +316,7 @@ a list of characters (a string), and hence asking for the first element
 will give the first character. But wait! What if we represented a
 sentence as a list of words?
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> ["The", "cat", "is", "on", "the", "mat", "."]
 ["The","cat","is","on","the","mat","."]
 Prelude> :type ["The", "cat", "is", "on", "the", "mat", "."]
@@ -333,7 +333,7 @@ can be a word, a number, and a punctuation sign.
 
 Rinse and repeat:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> head ["The", "cat", "is", "on", "the", "mat", "."]
 "The"
 ~~~~
@@ -342,7 +342,7 @@ Since a word is also a list, we can apply a function to words as well.
 For example, we can get the first character of the first word by
 applying `head`{.function}, to the `head`{.function} of a sentence:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> head (head ["The", "cat", "is", "on", "the", "mat", "."])
 'T'
 ~~~~
@@ -370,7 +370,7 @@ stepwise, we have to:
 
 You know how to get the in characters length of a single token:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> length "flying"
 6
 ~~~~
@@ -381,7 +381,7 @@ Haskell! Please apply this length function to each element of the list."
 It turns out that Haskell has a function to do this which is called
 `map`{.function}. Time to inspect `map`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type map
 map :: (a -> b) -> [a] -> [b]
 ~~~~
@@ -402,7 +402,7 @@ as strings, the function length that takes a list and returns its length
 as an integer, and we want to have a list of integers representing the
 lengths. Looks like we have a winner!
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> map length ["Oh", ",", "no", ",", "flying", ",", "pink", "ponies","!"]
 [2,1,2,1,6,1,4,6,1]
 ~~~~
@@ -411,7 +411,7 @@ We have now completed our first step: we have the length of each token
 in the corpus. Next, we have to sum the lengths that we have just
 retrieved. Fortunately, Haskell has a `sum`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type sum
 sum :: (Num a) => [a] -> a
 ~~~~
@@ -431,7 +431,7 @@ we can sum numbers. In fact, we can only sum numbers.
 After this solemn introduction into typeclasses, feel free to take a cup
 of tea (or coffee), and try step two:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 sum (map length ["Oh", ",", "no", ",", "flying", ",", "pink", "ponies", "!"])
 :}
@@ -442,7 +442,7 @@ By now, you will probably smell victory. The only step that remains is
 to divide the sum by the length of the sentence using the division
 operator (*/*):
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 sum (map length ["Oh", ",", "no", ",", "flying", ",", "pink", "ponies", "!"]) /
   length ["Oh", ",", "no", ",", "flying", ",", "pink", "ponies", "!"]
@@ -471,7 +471,7 @@ there is an *Int* in some place where it expected a type belonging to
 the typeclass *Fractional*. Since the division is the only new
 component, it is the first suspect of the breakdown:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type (/)
 (/) :: (Fractional a) => a -> a -> a
 ~~~~
@@ -483,7 +483,7 @@ We have done this because the division operator is used as a so-called
 stating that you would like to use it as a regular function. This means
 you can do things like this:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> (/) 1.0 2.0
 0.5
 ~~~~
@@ -493,7 +493,7 @@ it requires two arguments that belong to the *Fractional* typeclass. The
 sum and length that we calculated clearly do not belong to this
 typeclass, since they are of the type *Int*:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 :type
   sum (map length ["Oh", ",", "no", ",", "flying", ",", "pink", "ponies", "!"])
@@ -513,7 +513,7 @@ that converts an integer to any kind of number. Add
 `fromIntegral`{.function}, and you surely do get the average token
 length of the corpus:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 fromIntegral
   (sum (map length ["Oh", ",", "no", ",", "flying", ",", "pink", "ponies", "!"])) /
@@ -533,7 +533,7 @@ function. You can follow the same pattern as in the palindrome example:
 replace the sentence with a symbolic name and transform it into a
 function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 let averageLength l =
   fromIntegral (sum (map length l)) / fromIntegral (length l)
@@ -548,7 +548,7 @@ Congratulations, you just wrote your second function! But wait, you
 actually accomplished more than you may expect. Check the type signature
 of `averageLength`{.function}.
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type averageLength
 averageLength :: (Fractional b) => [[a]] -> b
 ~~~~
@@ -559,7 +559,7 @@ function that takes a list of a list of *a*, and returns a *b* that
 belongs to the *Fractional* typeclass. But wait, *a* can be anything,
 right? What happens if we apply this function to a list of sentences?
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> averageLength [["I", "like", "Haskell", "."],
   ["Ruby", "rocks", "too", "."],
   ["Who", "needs", "Java", "?"]]
@@ -615,7 +615,7 @@ To convert a text file to a Haskell representation, sentence splitting
 is a matter of splitting by line, and tokenization a matter of splitting
 by space. Have a look at the following example:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> "This is Jack .\nHe is a Haskeller ."
 "This is Jack .\nHe is a Haskeller ."
 ~~~~
@@ -629,7 +629,7 @@ Haskell provides a `lines`{.function} function to split up a string by
 line. Not surprisingly, this function accepts a string as its first
 argument, and will return a list of strings:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type lines
 lines :: String -> [String]
 Prelude> lines "This is Jack .\nHe is a Haskeller ."
@@ -643,7 +643,7 @@ the space character. Haskell also has a function to do this, named
 `lines`{.function}, except that it splits on spaces rather than
 newlines:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> words "This is Jack ."
 ["This","is","Jack","."]
 ~~~~
@@ -653,7 +653,7 @@ sentences. Recall that we can use the `map`{.function} function we have
 seen earlier to apply the `words`{.function} function to each element of
 the list of (untokenized) sentences:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> map words (lines "This is Jack .\nHe is a Haskeller .")
 [["This","is","Jack","."],["He","is","a","Haskeller","."]]
 ~~~~
@@ -661,7 +661,7 @@ Prelude> map words (lines "This is Jack .\nHe is a Haskeller .")
 Allright! That will do the job. We know how to turn this into a
 full-fledged function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let splitTokenize text = map words (lines text)
 Prelude> splitTokenize "This is Jack .\nHe is a Haskeller ."
 [["This","is","Jack","."],["He","is","a","Haskeller","."]]
@@ -681,7 +681,7 @@ is in turn applied to the outcome of *h(x))*. As you can see, this
 so-called function composition makes things much easier to read. We can
 now rewrite our tokenization function by using function composition:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let splitTokenize text = (map words . lines) text
 ~~~~
 
@@ -690,7 +690,7 @@ may not yet seem so interesting. However, it allows us to make yet
 another simplification step. Consider the type of the `map`{.function}
 function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type map
 map :: (a -> b) -> [a] -> [b]
 ~~~~
@@ -699,7 +699,7 @@ map :: (a -> b) -> [a] -> [b]
 we will do something that may look weird, but is very common in
 functional programming.
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type map words
 map words :: [String] -> [[String]]
 ~~~~
@@ -716,7 +716,7 @@ If we look back at our `splitTokenize`{.function} function, and look up
 the type of *map words . lines*, we see that it is a function that takes
 a *String* and returns a list of a list of strings:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type map words . lines
 map words . lines :: String -> [[String]]
 ~~~~
@@ -727,7 +727,7 @@ already defines our function (as we have shown above). We just need to
 bind this to the name `splitTokenize`{.function}. Consequently the
 function can once more be simplified:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let splitTokenize = map words . lines
 splitTokenize :: String -> [[String]]
 Prelude> splitTokenize "This is Jack .\nHe is a Haskeller ."
@@ -760,14 +760,14 @@ the reverse: take a list and give it a new head. The old head then
 becomes the head of the tail (are you still following?). In Haskell, we
 can do this using the `(:)`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> 2 : [3,4,5]
 [2,3,4,5] 
 ~~~~
 
 Ain't that great? We can also add a head, and yet another:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> 1 : 2 : [3,4,5]
 [1,2,3,4,5] 
 ~~~~
@@ -775,7 +775,7 @@ Prelude> 1 : 2 : [3,4,5]
 What if we do not have an element yet? Add the head to the empty list
 (*[]*):
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> "Hi" : []
 ["Hi"] 
 ~~~~
@@ -786,7 +786,7 @@ whether some element belongs to a list. We can do this using the
 and a list as its second. It will return a Bool of the value *True* if
 the element was in the list, or *False* otherwise. For example:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> elem 2 [1,2,3,4,5]
 True
 Prelude> elem 6 [1,2,3,4,5]
@@ -797,7 +797,7 @@ The function `notElem`{.function} is exactly the inverse of
 `elem`{.function}, and returns *True* if an element is not in the list,
 and *False* otherwise:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> notElem "foo" ["foo","bar","baz"]
 False
 Prelude> notElem "pony" ["foo","bar","baz"]
@@ -809,7 +809,7 @@ that it is not yet a member of that list. Or in other words, the
 addition is conditional. Haskell provides a set of keywords to model
 conditionals, if..then..else. The structure is like this:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 if expr then a else b 
 ~~~~
 
@@ -817,7 +817,7 @@ This whole structure itself is an expression. This expression evaluates
 to *a* if *expr* evaluates to *True* or to *b* if *expr* evaluates to
 False. To give a working, but useless example:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> if 1 == 2 then "cuckoo" else "egg"
 "egg"
 Prelude> if 1 == 1 then "cuckoo" else "egg"
@@ -826,7 +826,7 @@ Prelude> if 1 == 1 then "cuckoo" else "egg"
 
 This looks exactly like what we need. Just fill in the blanks:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> if elem "foo" ["foo","bar","baz"] then ["foo","bar","baz"]
   else "foo" : ["foo", "bar", "baz"]
 ["foo","bar","baz"]
@@ -838,7 +838,7 @@ Prelude> if elem "pony" ["foo","bar","baz"] then ["foo","bar","baz"]
 That's a bit contrived, but (as you hopefully see) not if we rewrite it
 to a function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let elemOrAdd e l = if elem e l then l else e:l
 Prelude> elemOrAdd "foo" ["foo", "bar", "baz"]
 ["foo","bar","baz"]
@@ -856,21 +856,21 @@ necessarily return a list. As such, it is a generalization of the
 `map`{.function} function. As usual, you can inspect the type signature
 to see the arguments of `foldl`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type foldl
 foldl :: (a -> b -> a) -> a -> [b] -> a
 ~~~~
 
 Now consider this example using `foldl`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> foldl (+) 0 [1,2,3,4,5]
 15
 ~~~~
 
 Stepwise, this fold is executed in the following manner:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 foldl (+) 0 [1,2,3,4,5]
 foldl (+) ((0)+1) [2,3,4,5]
 foldl (+) (((0)+1)+2) [3,4,5]
@@ -893,7 +893,7 @@ Unfortunately, `elemOrAdd`{.function} requires the accumulator as the
 second argument, and the function passed to `foldl`{.function} as the
 first argument. Compare the type signatures:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type foldl
 foldl :: (a -> b -> a) -> a -> [b] -> a
 Prelude> :type elemOrAdd
@@ -906,21 +906,21 @@ of `elemOrAdd`{.function}, the type of the second argument corresponds
 to that of the first. Of course, an easy 'hack' to solve this, is to
 redefine elemOrAdd, switching its arguments, and plug it into foldl:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let elemOrAdd l e = if elem e l then l else e:l
 ~~~~
 
 Now, since we are building a list, we use the empty list (*[]*) as the
 initial accumulator for this fold:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> foldl elemOrAdd [] ["blue", "blue", "red", "blue", "red"]
 ["red","blue"]
 ~~~~
 
 That looks good! Stepwise, the fold works like this:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 foldl elemOrAdd [] ["blue", "blue", "red", "blue", "red"]
 foldl elemOrAdd ("blue":([])) ["blue", "blue", "red", "blue", "red"]
 foldl elemOrAdd ("blue":([])) ["blue", "red", "blue", "red"]
@@ -935,7 +935,7 @@ foldl elemOrAdd ("red":("blue":([]))) []
 Now we wrap it up in another function, and you have constructed two
 functions that, together, make word lists:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let wordList = foldl elemOrAdd []
 Prelude> wordList ["blue", "blue", "red", "blue", "red"]
 ["red","blue"]
@@ -978,7 +978,7 @@ on the other hand, are defined in a module named *Data.Set*. For the
 time being, we will access functions from modules by prefixing the name
 of the module. For instance, this will give us the empty set:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Set.empty
 fromList []
 ~~~~
@@ -986,7 +986,7 @@ fromList []
 Like a list, a set can contain elements of various types. We see this
 when inspecting the type signature of the `empty`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type Data.Set.empty
 Data.Set.empty :: Data.Set.Set a
 ~~~~
@@ -994,7 +994,7 @@ Data.Set.empty :: Data.Set.Set a
 `empty`{.function} returns a Set of some type *a*. We can also construct
 a *Set* from a list using the `fromList`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Set.fromList [5,2,5,8,1,1,23]
 fromList [1,2,5,8,23]
 ~~~~
@@ -1003,7 +1003,7 @@ As you can see here, the set does not contain duplicates. Another nice
 property of Haskell sets is that they are ordered. We can also do the
 inverse, convert a set to a list using `toList`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Set.toList (Data.Set.fromList [5,2,5,8,1,1,23])
 [1,2,5,8,23]
 ~~~~
@@ -1012,7 +1012,7 @@ Elements can be added to or removed from a *Set* using respectively the
 `insert`{.function} and `delete`{.function} functions. Both functions
 return a set with that element inserted or removed:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Set.insert 42 (Data.Set.fromList [5,2,5,8,1,1,23])
 fromList [1,2,5,8,23,42]
 Prelude> Data.Set.delete 5 (Data.Set.fromList [5,2,5,8,1,1,23])
@@ -1022,7 +1022,7 @@ fromList [1,2,8,23]
 Finally, we can check whether some value is a member of a set by using
 the `member`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Set.member 23 (Data.Set.fromList [5,2,5,8,1,1,23])
 True
 Prelude> Data.Set.member 24 (Data.Set.fromList [5,2,5,8,1,1,23])
@@ -1033,7 +1033,7 @@ We have now seen enough to change our word list function. Rather than
 checking whether a value is in a list and adding it if not, we check
 whether it is in a *Set* and add it in when it is not:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
 let elemOrAdd s e =
   if Data.Set.member e s then s else Data.Set.insert e s
@@ -1049,7 +1049,7 @@ why do we need to check for duplicates? We don't. So, forget about
 point. Our objective now is to traverse a list of tokens, adding each
 token to a set, starting with the empty set. Our first take is this:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let wordSet = foldl Data.Set.insert Data.Set.empty
 ~~~~
 
@@ -1059,7 +1059,7 @@ reason why we swapped the elements of our initial elemOrAdd function)?
 We are accumulating a *Set*, but the set is the second argument to
 *Data.Set.insert*. We will pull a little trick out of our hat.
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let wordSet = foldl (\s e -> Data.Set.insert e s) Data.Set.empty 
 ~~~~
 
@@ -1068,7 +1068,7 @@ Actually, *( e -\> Data.Set.insert e s)* is very familiar. You could see
 it as an inline function. In functional programming jargon, this is
 called a *lambda*. Check out the type signature of the lambda:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type (\s e -> Data.Set.insert e s)
 (\s e -> Data.Set.insert e s)
   :: (Ord a) => Data.Set.Set a -> a -> Data.Set.Set a
@@ -1081,7 +1081,7 @@ two arguments that are bound to *s* and *e*. The function body comes
 after the arrow. To emphasize that this is just a function, the
 following functions are equivalent:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 myFun = (\s e -> Data.Set.insert e s)
 myFun s e = Data.Set.insert e ss 
 ~~~~
@@ -1092,7 +1092,7 @@ a set, our lambda takes a set and a value. The rest of the function
 follows the same pattern as *wordList*, except that we start with an
 empty set rather than an empty list. The function works as expected:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> wordSet ["blue", "blue", "red", "blue", "red"]
 fromList ["blue","red"]
 ~~~~
@@ -1136,7 +1136,7 @@ definitions.
 The `palindrome`{.function} function discussed earlier in this chapter
 can be written to a file like this:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 palindrome :: (Eq a) => [a] -> Bool
 palindrome word = word == reverse word 
 ~~~~
@@ -1144,7 +1144,7 @@ palindrome word = word == reverse word
 If you saved this file as *example.hs*, you can load it in **ghci**
 using the *:l* (shorthand for *:load*) command:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :l example
 [1 of 1] Compiling Main             ( example.hs, interpreted )
 Ok, modules loaded: Main.
@@ -1191,7 +1191,7 @@ different types as elements. However, if you inspect the type signatures
 of these tuples, you will see that the length and type for each position
 is fixed:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type (1,2,3)
 (1,2,3) :: (Num t, Num t1, Num t2) => (t, t1, t2)
 Prelude> :type ("hello","world")
@@ -1203,7 +1203,7 @@ Prelude> :type ("hello",1)
 To store frequencies, we could use a list of tuples of the type
 *[([Char], Int)]*. The phrase "to be or not to be" could be stored as
 
-~~~~ {.screen}
+~~~~ {.haskell}
 [("to",2),("be",2),("or",1),("not",1)]
 ~~~~
 
@@ -1221,7 +1221,7 @@ with the `map`{.function} function). A map maps a key to a value. In
 Haskell, maps are provided in the *Data.Map* module. Like sets, we can
 make an empty map:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Map.empty
 fromList []
 ~~~~
@@ -1230,7 +1230,7 @@ When you inspect the type signature of the empty map, you can see that
 it parametrizes over two types, a type for the key and a type for
 values:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type Data.Map.empty
 Data.Map.empty :: Data.Map.Map k a 
 ~~~~
@@ -1239,7 +1239,7 @@ We can construct a *Map* from a list of binary tuples (tuples with two
 elements), where the first element of the tuple becomes the key, and the
 second the value:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)]
 fromList [("be",2),("not",1),("or",1),("to",2)]
 Prelude> :type Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)]
@@ -1255,7 +1255,7 @@ integers or fractionals.
 The `insert`{.function} function is used to add a new mapping to the
 *Map*:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
   Data.Map.insert "hello" 1
     (Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)])
@@ -1266,7 +1266,7 @@ fromList [("be",2),("hello",1),("not",1),("or",1),("to",2)]
 If a mapping with the given key already exists, the existing mapping is
 replaced:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
   Data.Map.insert "be" 1
     (Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)])
@@ -1278,7 +1278,7 @@ Looking up values is a bit peculiar. You can lookup a value with the
 `lookup`{.function} function. However, if you inspect the type
 signature, you will see that the value is not returned as is:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type Data.Map.lookup
 Data.Map.lookup :: (Ord k) => k -> Data.Map.Map k a -> Maybe a
 ~~~~
@@ -1288,7 +1288,7 @@ called *Maybe*. *Maybe a* is a type that has just two possible so-called
 *constructors*, *Just a* or *Nothing*. You can put your own values in a
 *Maybe* box using the *Just a* constructor:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Just 22
 Just 22
 Prelude> :type Just 22
@@ -1304,7 +1304,7 @@ Just "stay calm" :: Maybe [Char]
 You can also make a box that contains vast emptiness with the *Nothing*
 constructor:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Nothing
 Nothing
 Prelude> :type Nothing
@@ -1319,7 +1319,7 @@ Since *Maybe* is so nice, the `lookup`{.function} function uses it. It
 will return the value packed with in a *Just* constructor if the key
 occurred in the map, or Nothing otherwise:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
   Data.Map.lookup "to"
     (Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)])
@@ -1336,7 +1336,7 @@ As for handling these values - we will come to that later. Mappings are
 deleted from a *Map* by key with the `delete`{.function} function. If a
 key did not occur in the *Map*, the original map is returned:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
   Data.Map.delete "to"
     (Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)])
@@ -1352,7 +1352,7 @@ fromList [("be",2),("not",1),("or",1),("to",2)]
 Finally, a *Map* can be converted to a list using the
 `toList`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :{
   Data.Map.toList
     (Data.Map.fromList [("to",2),("be",2),("or",1),("not",1)])
@@ -1390,7 +1390,7 @@ returned, the key was not in the Map. So, we will add it, and give it a
 
 The `countElem`{.function} function works as intended:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> foldl countElem Data.Map.empty ["to","be","or","not","to","be"]
 fromList [("be",2),("not",1),("or",1),("to",2)]
 ~~~~
@@ -1400,7 +1400,7 @@ drastically shorten our function. This function uses an update function
 to update a value, or a specified value if the key is not present in the
 Map:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :t Data.Map.insertWith
 Data.Map.insertWith
   :: Ord k =>
@@ -1436,7 +1436,7 @@ using some type, such as Maybe or a list. For instance, suppose that you
 have a Map that maps a customer name to a customer number, and yet
 another Map that maps a customer number to a list of order numbers:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> let customers = Data.Map.fromList [("Daniel de Kok", 1000),
   ("Harm Brouwer", 1001)]
 *Main> let orders = Data.Map.fromList [(1001, [128])]
@@ -1463,7 +1463,7 @@ lookupOrder0 customers orders customer =
 
 This function works as intended:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> lookupOrder0 customers orders "Jack Sparrow"
 Nothing
 *Main> lookupOrder0 customers orders "Daniel de Kok"
@@ -1512,7 +1512,7 @@ function performs the following steps:
 
 The type signature of (\>\>=) is also very illustrative:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type (>>=)
 (>>=) :: (Monad m) => m a -> (a -> m b) -> m b
 ~~~~
@@ -1546,7 +1546,7 @@ maybeBool = return
 
 This is `maybeBool`{.function} in action:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> maybeBool True
 Just True
 *Main> maybeBool False
@@ -1646,14 +1646,14 @@ Now on to some real work. As said, functions that do IO return a value
 wrapped in IO. For instance, the `putStrLn`{.function} function returns
 an empty tuple packed in the IO monad:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type putStrLn "hello world!"
 putStrLn "hello world!" :: IO ()
 ~~~~
 
 This is just a normal value, you can bind it to a name in **ghci**:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let v = putStrLn "hello world!"
 v :: IO ()
 ~~~~
@@ -1661,7 +1661,7 @@ v :: IO ()
 However, if we evaluate the value in **ghci**, it will execute this I/O
 action:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> v
 hello world!
 ~~~~
@@ -1669,7 +1669,7 @@ hello world!
 Of course, the same thing happens if we evaluate `putStrLn`{.function}
 directly:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> putStrLn "hello world!"
 hello world!
 ~~~~
@@ -1683,7 +1683,7 @@ using the `IO.openFile`{.function} function. `openFile`{.function}
 requires a filename and an I/O mode as its arguments, and it returns a
 handle packed in the IOmonad:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type IO.openFile
 IO.openFile
   :: FilePath
@@ -1693,7 +1693,7 @@ IO.openFile
 
 We use IO.ReadMode to open `brown.txt`{.filename} for reading:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> let h = IO.openFile "brown.txt" IO.ReadMode
 Prelude> :type h
 h :: IO GHC.IO.Handle.Types.Handle
@@ -1706,7 +1706,7 @@ IO monad in **ghci**. The reason that you can is that **ghci** lives in
 the IO monad itself. So, the value will still never leave IO. We can
 bind the value to a name (or pattern) using <-:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> h <- IO.openFile "brown.txt" IO.ReadMode
 Prelude> :type h
 h :: GHC.IO.Handle.Types.Handle
@@ -1716,7 +1716,7 @@ That gives us the handle, bound to h. The next function that we will use
 is IO.hGetContents, which returns unread data as a String wrapped in the
 IO monad:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type IO.hGetContents
 IO.hGetContents :: GHC.IO.Handle.Types.Handle -> IO String
 ~~~~
@@ -1729,7 +1729,7 @@ necessary for your program to read the whole file into memory, it will
 allocate and deallocate chunks of the file as they are used. Now, get
 the contents of the file:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> c <- IO.hGetContents h
 Prelude> :type c
 c :: String
@@ -1737,7 +1737,7 @@ c :: String
 
 We can apply the usual list functions to this String:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> head c
 'T'
 Prelude> length c
@@ -1749,14 +1749,14 @@ spaces, you can use the `lines`{.function} and `words`{.function}
 functions to apply sentence splitting and tokenization. For instance,
 the first word of the corpus is:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> head (words (head (lines c)))
 "The"
 ~~~~
 
 The frequency of the word the is nicely wrapped in a Just constructor:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> Data.Map.lookup "the" (freqList (words c))
 Just 62713
 ~~~~

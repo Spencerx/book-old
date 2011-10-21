@@ -153,7 +153,7 @@ feedback. On UNIX systems, type **ghci -XNoMonomorphismRestriction** in
 a terminal to launch the interpreter. You will be greeted with a prompt
 that resembles the following:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 $ ghci -XNoMonomorphismRestriction
 GHCi, version 7.0.2: http://www.haskell.org/ghc/  :? for help
 Loading package ghc-prim ... linking ... done.

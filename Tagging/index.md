@@ -102,7 +102,7 @@ allows us to get a String representation of an
 instance^[[2](#ftn.idp1235440)]^. We can use this constructor to create
 training instances:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> TrainingInstance "the" "AT"
 TrainingInstance "the" "AT"
 *Main> TrainingInstance "pony" "NN"
@@ -118,7 +118,7 @@ is done by splitting the String on the forward slash character (/). We
 can use the `break`{.function} function to break the string on the first
 element for which the supplied function is true. For instance:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> break (== '/') "the/AT"
 ("the","/AT")
 ~~~~
@@ -164,7 +164,7 @@ upon this Bool:
 that returns a binary tuple with just the prefix and suffix lists. The
 `rsplit`{.function} function works as intended:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> rsplit '/' "the/AT"
 ("the","AT")
 *Main> rsplit '/' "a/b/TEST"
@@ -184,7 +184,7 @@ TrainingInstance token tag
 Why not see how we are doing, and get the ten first training instances
 of the Brown corpus?
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> take 10 $ map toTrainingInstance $ words c
@@ -226,7 +226,7 @@ to one, if the Tag was never seen before with this token.
 Let us test `tokenTagFreqs`{.function} on the first ten training
 instances as well:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> tokenTagFreqs $ take 10 $ map toTrainingInstance $ words c
@@ -249,7 +249,7 @@ in the Map, we want to transform its value. The value was a Map, mapping
 Tag to Int, and we want the value to be a Tag, namely the most frequent
 Tag. There is also a `map`{.function} functions for Map:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type Data.Map.map
 Data.Map.map :: (a -> b) -> M.Map k a -> M.Map k b
 ~~~~
@@ -260,7 +260,7 @@ over the inner map, storing the most frequent tag and its frequency in
 the accumulator. The Data.Map module provides the
 `foldlWithKey`{.function} to fold over keys and values:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type Data.Map.foldlWithKey
 Data.Map.foldlWithKey :: (b -> k -> a -> b) -> b -> M.Map k a -> b
 ~~~~
@@ -296,7 +296,7 @@ pair.
 You can craft some examples to check whether
 `tokenMostFreqTag`{.function} works as intended. For example:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> tokenMostFreqTag $ tokenTagFreqs [TrainingInstance "a" "A",
   TrainingInstance "a" "B", TrainingInstance "a" "A"]
 fromList [("a","A")]
@@ -327,7 +327,7 @@ freqTagWord m t = M.lookup w t
 We can now train our model from the Brown corpus, and tag some
 sentences:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let model = trainFreqTagger $ map toTrainingInstance $ words c
@@ -400,7 +400,7 @@ evaluation data. The counts are incremented in the following manner:
 
 Time to evaluate your first tagger!
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let model = trainFreqTagger $ map toTrainingInstance $ words c
@@ -431,7 +431,7 @@ baselineTagger tag _ = Just tag
 The most frequent tag in the Brown corpus is NN, the singular common
 noun. Let's evaluate the baseline tagger:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-test.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> evalTagger (baselineTagger "NN") $ map toTrainingInstance $ words c
@@ -456,7 +456,7 @@ backoffTagger f bt t = let pick = f t in
 See how we can nicely cascade taggers by writing higher-order functions?
 We proceed to evaluate this tagger:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let model = trainFreqTagger $ map toTrainingInstance $ words c
@@ -605,7 +605,7 @@ data TransformationRule =
 To confirm that these templates are indeed working as expected, we can
 recreate the rules that were mentioned earlier:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> NextTagRule (Replacement "TO" "IN") "AT"
 NextTagRule (Replacement "TO" "IN") "AT"
 *Main> PrevTagRule (Replacement "NN" "VB") "TO"
@@ -625,7 +625,7 @@ instance:
 This can simply be done by using Haskell's `zip`{.function} function,
 that 'zips' together two lists into one list of binary tuples:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type zip
 zip :: [a] -> [b] -> [(a, b)]
 *Main> let correct = ["AT","NN","TO"]
@@ -645,7 +645,7 @@ install the ListZipper package, you will have access to the
 Data.List.Zipper module. A Zipper can be seen as a list that can be
 traversed in two directions. We can construct a Zipper from a list:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> let taggingState = Data.List.Zipper.fromList $
   zip ["AT","NN","TO"]  ["AT","VB","TO"]
 *Main> taggingState
@@ -655,7 +655,7 @@ Zip [] [("AT","AT"),("NN","VB"),("TO","TO")]
 We can get the current element (the element the so-called cursor is
 pointing at) in the zipper using `Data.List.Zipper.cursor`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> Data.List.Zipper.cursor taggingState
 ("AT","AT")
 ~~~~
@@ -664,7 +664,7 @@ We can move the cursor to the left (point to the previous element) with
 `Data.List.Zipper.left`{.function}, and to the right (point to the next
 element) with `Data.List.Zipper.right`{.function}:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> Data.List.Zipper.right taggingState
 Zip [("AT","AT")] [("NN","VB"),("TO","TO")]
 *Main> Data.List.Zipper.cursor $ Data.List.Zipper.right taggingState
@@ -712,7 +712,7 @@ incorrect tag by the correct one, and extracting the next tag. We can
 test this instantiation function, assuming that `taggingState`{.varname}
 is defined as above:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> instNextTagRule0 $ Data.List.Zipper.right taggingState
 Just (NextTagRule (Replacement "VB" "NN") "TO")
 ~~~~
@@ -734,7 +734,7 @@ instPrevTagRule0 z
 
 Let's do a sanity check to be safe:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> instPrevTagRule0 $ Data.List.Zipper.right taggingState
 Just (PrevTagRule (Replacement "VB" "NN") "AT")
 ~~~~
@@ -758,7 +758,7 @@ instSurroundTagRule0 z
 
 And this also works as intended:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> instSurroundTagRule0 $ Data.List.Zipper.right taggingState
 Just (SurroundTagRule (Replacement "VB" "NN") "AT" "TO")
 ~~~~
@@ -824,7 +824,7 @@ Zipper using `Data.List.Zipper.foldlz'`{.function}. This is a left fold
 with a strict accumulator. The folding function gets the accumulator as
 its first argument and the current Zipper (state) as its second:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> :type Data.List.Zipper.foldlz'
 Data.List.Zipper.foldlz'
   :: (b -> Z.Zipper a -> b) -> b -> Z.Zipper a -> b
@@ -855,7 +855,7 @@ from the correct tag, rules are instantiated by folding over the
 instantiation functions. Applying this to our little test data, shows
 that the function is operating correctly:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> instRules0 [instNextTagRule, instPrevTagRule, instSurroundTagRule]
   taggingState
 fromList [NextTagRule (Replacement "VB" "NN") "TO",
@@ -883,7 +883,7 @@ Now we can use this function to create the initial state for the
 transformation-based learner, and extract all possible transformation
 rules:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let proposedRules = instRules0 [instNextTagRule, instPrevTagRule, instSurroundTagRule] $
@@ -925,7 +925,7 @@ sortRules = L.sortBy (\(_,a) (_,b) -> compare b a) . M.toList
 `Data.List.sortBy`{.function} sorts a list according to some comparison
 function. We use the stock `compare`{.function} function:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 Prelude> :type compare
 compare :: (Ord a) => a -> a -> Ordering
 Prelude> compare 1 2
@@ -946,7 +946,7 @@ reverse ordering, making larger elements come first.
 Let's get some immediate gratification by extracting the ten rules with
 the most corrections:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let proposedRules = instRules [instNextTagRule, instPrevTagRule, instSurroundTagRule] $
@@ -1021,7 +1021,7 @@ introduced from the number of corrections. You can try to apply this
 function to some rules, for instance the best rule of the initial
 ranking:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let learningState = initialLearningState $ map toTrainingInstance $ words c
@@ -1065,7 +1065,7 @@ current rule (`bestScore >= score)`{.code}. If this is is not the case,
 the current rule becomes the best rule. Let us use this function to
 select the best rule:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let learningState = initialLearningState $ map toTrainingInstance $ words c
@@ -1114,7 +1114,7 @@ of the list that we are returning, and we call
 the list. We have now completed our transformation-based learner! Time
 to extract some rules:
 
-~~~~ {.screen}
+~~~~ {.haskell}
 *Main> h <- IO.openFile "brown-pos-train.txt" IO.ReadMode
 *Main> c <- IO.hGetContents h
 *Main> let learningState = initialLearningState $ map toTrainingInstance $ words c
