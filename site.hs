@@ -17,15 +17,22 @@ main = hakyll $ do
     compile compressCssCompiler
   
   -- Copy images
-  match "images/**.png" $ do
+  match "**.png" $ do
     route   idRoute
     compile copyFileCompiler
 
   -- Read templates
   match "templates/*" $ compile templateCompiler
 
-  -- Web pages
-  match "**.md" $ do
+  -- General pages
+  match (list ["index.md"]) $ do
+    route   $ setExtension ".html"
+    compile $ pageCompiler
+      >>> applyTemplateCompiler "templates/book.html"
+      >>> relativizeUrlsCompiler
+
+  -- Chapters
+  match (list ["Words/index.md"]) $ do
     route   $ setExtension ".html"
     compile $ pageCompilerWith defaultParserState chapterOptions
       >>> applyTemplateCompiler "templates/book.html"
