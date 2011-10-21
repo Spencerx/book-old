@@ -4,6 +4,7 @@ module Main where
 
 import Control.Arrow ((>>>), arr)
 import Data.Monoid (mempty)
+import Text.Pandoc (WriterOptions(..), defaultParserState, defaultWriterOptions)
 
 import Hakyll
 
@@ -25,6 +26,12 @@ main = hakyll $ do
   -- Web pages
   match "**.md" $ do
     route   $ setExtension ".html"
-    compile $ pageCompiler
+    compile $ pageCompilerWith defaultParserState chapterOptions
       >>> applyTemplateCompiler "templates/book.html"
       >>> relativizeUrlsCompiler
+
+chapterOptions = defaultWriterOptions {
+                   writerNumberSections  = True,
+                   writerSectionDivs     = True,
+                   writerTableOfContents = True
+                 }
