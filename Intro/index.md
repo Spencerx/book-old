@@ -1,30 +1,11 @@
-Chapter 1. Introduction
+---
+title: Introduction
+---
 
-[Prev](preface.xhtml)
-
-[Next](chap-words.xhtml)
-
-* * * * *
-
-## Chapter 1. Introduction
-
-**Table of Contents**
-
-[1.1. Welcome](chap-intro.xhtml#sec-intro-welcome)
-
-[1.2. What is natural language
-processing?](chap-intro.xhtml#sec-intro-whats-nlp)
-
-[1.3. What is Haskell?](chap-intro.xhtml#sec-intro-whats-haskell)
-
-[1.4. What you need](chap-intro.xhtml#sec-intro-needs)
-
-[1.5. Ready, set, go!](chap-intro.xhtml#idp50224)
-
-## 1.1. Welcome
+# Welcome
 
 The Internet and the World Wide Web have changed mankind, forever. It is
-to early too tell, but their impact may be as great as the combustion
+to early to tell, but their impact may be as great as the combustion
 engine or the introduction of electric devices. The Internet gave
 universal access to information, not just information that broadcasters
 or newspapers thought that was important, but information that interests
@@ -56,11 +37,11 @@ information. We will go into many of the techniques that so-called
 computational linguists use to analyze the structure of human language,
 and transform it into a form that computers work with.
 
-## 1.2. What is natural language processing?
+# What is natural language processing?
 
 Stub
 
-## 1.3. What is Haskell?
+# What is Haskell?
 
 Haskell is a static, pure, lazy, functional language. Gee, that sounds
 an awful lot like buzzword lingo! That may well be, but these properties
@@ -119,11 +100,11 @@ required. If you require more background on certain concepts, we
 recommend you to consult the book [Learn Haskell for Great
 Good!](http://learnyouahaskell.com/)
 
-## 1.4. What you need
+# What you need
 
 To work with this book, you need the Haskell Platform and a text editor.
 The Haskell Platform is available for Mac OS X, Windows, and Linux at:
-[http://hackage.haskell.org/platform/](http://hackage.haskell.org/platform/)
+[http://hackage.haskell.org/platform/](http://hackage.haskell.org/platform/).
 Download the package for your platform, and install it.
 
 If you do not use one of these platforms, not all is lost. First of all,
@@ -145,7 +126,7 @@ interpreter within the editor.
 Some examples in the book use corpora. These corpora are available at:
 [http://nlpwp.org/](http://nlpwp.org/)
 
-## 1.5. Ready, set, go!
+# Ready, set, go!
 
 You will probably want to get acquainted with the **ghci** Haskell
 interpreter. It allows you to try Haskell expressions and get immediate
@@ -163,18 +144,10 @@ Loading package ffi-1.0 ... linking ... done.
 Prelude> 
 ~~~~
 
-On Windows, choose Start -\> All Programs -\> Haskell Platform -\>
-WinGHCi. The first time, you should set the NoMonomorphismRestriction
+On Windows, choose *Start -\> All Programs -\> Haskell Platform -\>
+WinGHCi*. The first time, you should set the NoMonomorphismRestriction
 option that is required for some examples. Do this by going to the
-following item: File \> Options \> GHCi Startup. Then append
+following item: *File \> Options \> GHCi Startup*. Then append
 -XNoMonomorphismRestriction in the field (make sure that there is a
-space before this addition). Click OK, and restart WinGHCi.
-
-* * * * *
-
-  ----------------------- --------------------- --------------------------
-  [Prev](preface.xhtml)                         [Next](chap-words.xhtml)
-  Preface                 [Home](index.xhtml)   Chapter 2. Words
-  ----------------------- --------------------- --------------------------
-
+space before this addition). Click *OK*, and restart WinGHCi.
 

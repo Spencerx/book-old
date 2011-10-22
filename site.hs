@@ -47,5 +47,5 @@ chapterOptions = defaultWriterOptions {
                    writerTemplate        = "<b>Table of contents</b>\n$toc$\n$body$"
                  }
 
-chapters = ["Words/index.md", "NGrams/index.md"]
+chapters = ["Intro/index.md", "Words/index.md", "NGrams/index.md"]
 images = regex "(\\.svg$)|(\\.png$)"
