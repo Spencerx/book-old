@@ -15,4 +15,5 @@ Some rights reserved. This book is made available under the Creative Commons Att
 
 ## Chapters
 
-* [Words](Words)
+* [2. Words](Words)
+* [3. N-grams](NGrams)
