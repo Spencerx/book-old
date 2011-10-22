@@ -1,34 +1,8 @@
-Chapter 3. N-grams
+---
+title: N-grams
+---
 
-[Prev](chap-words.xhtml)
-
-[Next](chap-similarity.xhtml)
-
-* * * * *
-
-## Chapter 3. N-grams
-
-**Table of Contents**
-
-[3.1. Introduction](chap-ngrams.xhtml#chap-ngrams-intro)
-
-[3.2. Bigrams](chap-ngrams.xhtml#chap-ngrams-bigrams)
-
-[3.3. A few words on Pattern
-Matching](chap-ngrams.xhtml#chap-ngrams-pattern-matching)
-
-[3.4. Collocations](chap-ngrams.xhtml#chap-ngrams-collocations)
-
-[3.5. From bigrams to n-grams](chap-ngrams.xhtml#chap-ngrams-ngrams)
-
-[3.6. Lazy and strict
-evaluation](chap-ngrams.xhtml#chap-ngrams-lazy-strict)
-
-[3.7. Suffix arrays](chap-ngrams.xhtml#chap-ngrams-suffixarrays)
-
-[3.8. Markov models](chap-ngrams.xhtml#chap-ngrams-markov-models)
-
-## 3.1. Introduction
+# Introduction
 
 In the previous chapter, we have looked at words, and the combination of
 words into a higher level of meaning representation: a sentence. As you
@@ -78,7 +52,7 @@ course, this is not very informative, as these are just the words that
 form the sentence. In fact, N-grams start to become interesting when n
 is two (a bigram) or greater. Let us start with bigrams.
 
-## 3.2. Bigrams
+# Bigrams
 
 An unigram can be thought of as a window placed over a text, such that
 we only look at one word at a time. In similar fashion, a bigram can be
@@ -225,7 +199,7 @@ of this, and the tail of the tail of this list, and so forth. In other
 words, it should simply constantly take the first bigram of a list, and
 do the same for its tail:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 bigram :: [a] -> [[a]]
 bigram xs = take 2 xs : bigram (tail xs)
 ~~~~
@@ -270,7 +244,7 @@ looking for bigrams when the tail of a list contains only one item (as
 it is difficult to construct a bigram out of only one word). We could do
 this using an if..then..else structure:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 bigram :: [a] -> [[a]]
 bigram xs = if length(xs) >= 2
     then take 2 xs : bigram (tail xs)
@@ -330,7 +304,7 @@ matching definition of a function, and return the result its
 application. Hence, we can define patterns for the stop condition and
 recursive step as follows:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 bigram :: [a] -> [[a]]
 bigram [x] = []
 bigram xs  = take 2 xs : bigram (tail xs)
@@ -376,7 +350,7 @@ matches anything, without doing binding. This pattern is represented by
 an underscore. Using this underscore, we can patch up the aesthetics of
 our function:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 bigram :: [a] -> [[a]]
 bigram [_] = []
 bigram xs  = take 2 xs : bigram (tail xs)
@@ -395,7 +369,7 @@ an empty list. Indeed, an empty list does not match with the pattern of
 our stop condition, and therefore the recursive step is applied to it.
 We can solve this by adding a pattern for an empty list:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 bigram :: [a] -> [[a]]
 bigram []  = []
 bigram [_] = []
@@ -414,7 +388,7 @@ Prelude> bigram []
 If you want to get really fancy, you could also use pattern matching to
 extract a bigram, rather than using `take`{.function}:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 bigram' :: [a] -> [[a]]
 bigram' (x:y:xs) = [x,y] : bigram' (y:xs)
 bigram' _        = []
@@ -427,7 +401,7 @@ empty list and the list containing just one element.
 Good, we are all set! We have our bigram function now... time for some
 applications of a bigram language model!
 
-### 3.2.1. Exercises
+## Exercises
 
 1.  A skip-bigram is any pair of words in sentence order. Write a
     function `skipBigrams`{.function} that extracts skip-bigrams from a
@@ -443,11 +417,11 @@ Prelude> skipBigrams ["Colorless", "green", "ideas", "sleep", "furiously"]
 ("sleep","furiously")]
 ~~~~
 
-## 3.3. A few words on Pattern Matching
+# A few words on Pattern Matching
 
 Stub
 
-## 3.4. Collocations
+# Collocations
 
 A straightforward application of bigrams is the identification of
 so-called collocations. Recall that bigram language models exploit the
@@ -577,7 +551,7 @@ Just 392
 
 Todo: finish this section
 
-## 3.5. From bigrams to n-grams
+# From bigrams to n-grams
 
 While extracting collocations from the Brown corpus, we have seen how
 useful bigrams actually are. But at this point you may be clamoring for
@@ -587,7 +561,7 @@ n. We can easily modify our definition of bigrams to extract n-grams a
 specified length. Rather than always `take`{.function}ing two elements,
 we make the number of items to take an argument to the function:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 ngrams :: Int -> [a] -> [[a]]
 ngrams 0 _  = []
 ngrams _ [] = []
@@ -617,7 +591,7 @@ show two other implementations of the `ngrams`{.function} function. The
 first will be more declarative than the definition above, the second
 will make use of a monad that we have not used yet: the list monad.
 
-### 3.5.1. A declarative definition of ngrams
+## A declarative definition of ngrams
 
 Some patterns emerge in the recursive definition of `ngrams`{.function}
 that correspond to functions in the *Data.List* module:
@@ -699,7 +673,7 @@ False
 
 Or, written as a function definition:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 hasLengthTwo l = isTwo (length l)
 ~~~~
 
@@ -723,7 +697,7 @@ Prelude Data.List> filter ((==) 2 . length) $ map (take 2) $ tails sent
 And this corresponds to the output we expected. So, we can now wrap this
 expression in a function, replacing *2* by *n*:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 ngrams' :: Int -> [b] -> [[b]]
 ngrams' n = filter ((==) n . length) . map (take n) . tails
 ~~~~
@@ -737,7 +711,7 @@ reading its body right-to-left, while the recursive definition requires
 a closer look. You will notice that, as you get more familiar with
 Haskell, it will become easier to spot such patterns in functions.
 
-### 3.5.2. A monadic definition of ngrams
+## A monadic definition of ngrams
 
 As discussed in the previous chapter, each type that belongs to the
 `Monad`{.classname} typeclass provides the `(>>=)`{.function} function
@@ -761,7 +735,7 @@ The third line of the output shows that lists belong to the
 function combine expressions resulting in a list? A quick peek at its
 definition for the list type reveals this:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 instance Monad [] where
   m >>= k = foldr ((++) . k) [] m
   [...]
@@ -914,7 +888,7 @@ on the list requiring elements to be of length *2*. We can easily
 transform this expression to a function, by making the n-gram length and
 the list arguments of that function:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 ngrams'' :: Int -> [a] -> [[a]]
 ngrams'' n l = do
   t <- tails l
@@ -929,15 +903,14 @@ declaration that is readable and performant. In this case, we think that
 the declarative definition of `ngrams`{.function} is the most
 preferable.
 
-### 3.5.3. Exercises
+## Exercises
 
-1.  Rewrite the `skipBigram`{.function} function discussed in [Section
-    3.2.1, “Exercises”](chap-ngrams.xhtml#chap-ngrams-bigrams-exercises)
-    without explicit recursion, either by defining it more declaratively
+1.  Rewrite the `skipBigram`{.function} function that you had previously
+	written, without explicit recursion, either by defining it more declaratively
     or using the list monad. Hint: make use of the
     `Data.List.zip`{.function} function.
 
-## 3.6. Lazy and strict evaluation
+# Lazy and strict evaluation
 
 You may have noticed that something curious goes on in Haskell. For
 instance, consider the following GHCi session:
@@ -972,7 +945,7 @@ expression is only evaluated when necessary. For instance, taking three
 elements from `infinite`{.function} results in the following
 evaluations:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 infinite 0
 0 : infinite 1
 0 : (1 : infinite 2)
@@ -990,7 +963,7 @@ effect that has on performance of a program.
 
 Todo: lazy evaluation and folds.
 
-## 3.7. Suffix arrays
+# Suffix arrays
 
 In this chapter, we have seen how you could extract an n-gram of a given
 n from a list of words, characters, groceries, or whatever you desire.
@@ -1006,8 +979,7 @@ Fortunately, it turns out that there is a simple and smart trick to do
 this, using a data structure called suffix arrays. First, we start with
 the corpus, and a parallel list or array where each element contains an
 index that can be seen as a pointer into the corpus. The left side of
-figure [Figure 3.1, “Constructing a suffix
-array”](chap-ngrams.xhtml#fig-suffixarray) shows the initial state for
+figure **Figure 3.1** shows the initial state for
 the phrase "to be or not to be". We then sort the array of indices by
 comparing the elements they point to. For instance, we could compare the
 element with index 2 ("or") and the element with index 3 ("not"). Since
@@ -1018,20 +990,19 @@ on to the element that succeed both instances of "to", respectively "be"
 and "be". And we continue such comparisons recursively, until we find
 out that one n-gram is lexicographically sorted before the other (in
 this case, 4 should come before 0, since "to be" is lexicographically
-sorted before "to be or". The right side of figure [Figure 3.1,
-“Constructing a suffix array”](chap-ngrams.xhtml#fig-suffixarray) shows
+sorted before "to be or". The right side of **Figure 3.1** shows
 how the indices will be sorted after applying this sorting methodology.
 
 **Figure 3.1. Constructing a suffix array**
 
   --------------------------------------------------------------------
-  ![Constructing a suffix array](../images/suffixarray-unsorted.svg)
+  ![Constructing a suffix array](suffixarray-unsorted.svg)
   --------------------------------------------------------------------
 
 Unsorted indices
 
   ------------------------------------------------------------------
-  ![Constructing a suffix array](../images/suffixarray-sorted.svg)
+  ![Constructing a suffix array](suffixarray-sorted.svg)
   ------------------------------------------------------------------
 
 Sorted indices
@@ -1090,7 +1061,7 @@ construction of the suffix array. After construction, it is also useful
 for most tasks to be able to access the indices randomly. Alright, first
 we create a data type for the suffix array:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 import qualified Data.Vector as V
 
 data SuffixArray a = SuffixArray (V.Vector a) (V.Vector Int)
@@ -1124,7 +1095,7 @@ will work, since the Data.Vector data type is of the Ord type class,
 meaning that the operators necessary for comparisons are provided. Our
 comparison function can be written like this:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 saCompare :: Ord a => (V.Vector a -> V.Vector a -> Ordering) ->
              V.Vector a -> Int -> Int -> Ordering
 saCompare cmp d a b = cmp (V.drop a d) (V.drop b d)
@@ -1143,7 +1114,7 @@ compare the two subvectors.
 
 Now we can create the function that actually creates a suffix array:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 import qualified Data.List as L
 
 suffixArrayBy :: Ord a => (V.Vector a -> V.Vector a -> Ordering) ->
@@ -1182,7 +1153,7 @@ of indices to a vector. For convenience, we can also add a function that
 uses Haskell's `compare`{.function} function that uses the default
 sorting order that is imposed by the Ord typeclass:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 suffixArray :: Ord a => V.Vector a -> SuffixArray a
 suffixArray = suffixArrayBy compare
 ~~~~
@@ -1194,7 +1165,7 @@ already construct a suffix array from a Vector using the
 `suffixArray`{.function} function. So, we just need to convert a list to
 a Vector, and pass it to `suffixArray`{.function}:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 fromList :: Ord a => [a] -> SuffixArray a
 fromList = suffixArray . V.fromList
 ~~~~
@@ -1227,7 +1198,7 @@ function to traverse the vector, constructing a list for each index. We
 will accumulate these lists in (yet another) list. Please welcome
 `toList`{.function}:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 toList :: SuffixArray a -> [[a]]
 toList (SuffixArray d i) = V.foldr vecAt [] i
     where vecAt idx l = V.toList (V.drop idx d) : l
@@ -1270,7 +1241,7 @@ search. For quick accessibility, we create a function comparable to the
 `toList`{.function} method, but returning a Vector of Vector, rather
 than a list of list:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 elems :: SuffixArray a -> V.Vector (V.Vector a)
 elems (SuffixArray d i) = V.map vecAt i
     where vecAt idx = V.drop idx d
@@ -1300,10 +1271,8 @@ step”](chap-ngrams.xhtml#fig-linear-search-step)).
 **Figure 3.2. Linear search step**
 
   ----------------------------------------------------
-  ![Linear search step](../images/linear-search.svg)
+  ![Linear search step](linear-search.svg)
   ----------------------------------------------------
-
-\
 
 However, if we know that the vector of numbers is sorted, we can devise
 a more intelligent strategy. As a child, you probably played number
@@ -1317,18 +1286,15 @@ the 1..50 or 51..100 range if the number was smaller or greater than 50.
 The same trick can be applied when searching a sorted vector. If you
 compare a value to the element in the middle, you remove cut half of the
 search space (if initial guess was not correct). This procedure is
-called a binary search. For instance, [Figure 3.3, “Binary search
-step”](chap-ngrams.xhtml#fig-binary-search) shows the first search step
-when applying a binary search to the example in [Figure 3.2, “Linear
-search step”](chap-ngrams.xhtml#fig-linear-search-step).
+called a binary search. For instance, **Figure 3.3**
+shows the first search step
+when applying a binary search to the example in **Figure 3.2**.
 
 **Figure 3.3. Binary search step**
 
   ----------------------------------------------------
-  ![Binary search step](../images/binary-search.svg)
+  ![Binary search step](binary-search.svg)
   ----------------------------------------------------
-
-\
 
 The performance of binary search compared to linear search should not be
 underestimated: the time of a linear search grows linearly with the
@@ -1343,7 +1309,7 @@ finds the index of an element in a Vector, wrapped in Maybe. If the
 element has multiple occurrences in the Vector, just one index is
 returned. If the element is not in the Vector, Nothing is returned.
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 binarySearchByBounded :: (Ord a) => (a -> a -> Ordering) -> V.Vector a ->
                          a -> Int -> Int -> Maybe Int
 binarySearchByBounded cmp v e lower upper
@@ -1376,7 +1342,7 @@ than `lower`{.varname} when we have exhausted the search space.
 Let's define two convenience functions to make binary searches a bit
 simpler:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 binarySearchBounded :: (Ord a) => V.Vector a -> a -> Int -> Int -> Maybe Int
 binarySearchBounded = binarySearchByBounded compare
 
@@ -1442,7 +1408,7 @@ Just 3
 
 That did the trick. Writing the contains function is now simple:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 contains :: Ord a => SuffixArray a -> V.Vector a -> Bool
 contains s e = case binarySearch (restrict eLen s) e of
                  Just _  -> True
@@ -1474,7 +1440,7 @@ the search space, since it may have been the only instance of that
 element. This gives us the following `lowerBoundByBounds`{.function}
 function and corresponding helpers:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 lowerBoundByBounds :: Ord a => (a -> a -> Ordering) -> V.Vector a -> a ->
                       Int -> Int -> Maybe Int
 lowerBoundByBounds cmp v e lower upper
@@ -1503,7 +1469,7 @@ equal to the middle we search the upper half of the search space
 including the element that we found to be equal. Give the floor to
 `upperBoundByBounds`{.function} and helpers:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 upperBoundByBounds :: Ord a => (a -> a -> Ordering) -> V.Vector a -> a ->
                       Int -> Int -> Maybe Int
 upperBoundByBounds cmp v e lower upper
@@ -1536,7 +1502,7 @@ recursion.
 Great. I guess you will now be able to write that function in terms of
 `lowerBoundByBounds`{.function} and `upperBoundByBounds`{.function}:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 frequencyByBounds :: Ord a => (a -> a -> Ordering) -> V.Vector a -> a ->
                      Int -> Int -> Maybe Int
 frequencyByBounds cmp v e lower upper = do
@@ -1579,12 +1545,12 @@ Nothing
 Nothing
 ~~~~
 
-### 3.7.1. Exercises
+## Exercises
 
 1.  Write a function `mostFrequentNgram`{.function} with the following
     type signature:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 mostFrequentNgram :: Ord a => SuffixArray a -> Int -> Maybe (V.Vector a, Int)
 ~~~~
 
@@ -1605,7 +1571,7 @@ mostFrequentNgram :: Ord a => SuffixArray a -> Int -> Maybe (V.Vector a, Int)
     of the search space. Modify `frequencyByBounds`{.function} to use
     this methodology.
 
-## 3.8. Markov models
+# Markov models
 
 At the beginning of this chapter we mentioned that n-grams can be
 exploited to model language. While they may not be so apt as
@@ -1741,7 +1707,7 @@ consensus is that for most applications a trigram language model
 provides a good trade-off between data availability and estimator
 quality.
 
-### 3.8.1. Implementation
+## Implementation
 
 The implementation of a bigram Markov model in Haskell should now be
 trivial. If we have a frequency map of unigrams and bigrams of the type
@@ -1749,7 +1715,7 @@ trivial. If we have a frequency map of unigrams and bigrams of the type
 calculates p ( w n | w n - 1 ) , or more generally p ( state n | state n
 - 1 ) :
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 import qualified Data.Map as M
 import Data.Maybe (fromMaybe)
 
@@ -1765,7 +1731,7 @@ Now we write a function that extracts all bigrams, calculates the
 transition probabilities and takes the product of the transition
 probabilities:
 
-~~~~ {.programlisting}
+~~~~ {.haskell}
 pMarkov :: (Ord a, Integral n, Fractional f) =>
   M.Map [a] n -> [a] -> f
 pMarkov ngramFreqs =
@@ -1782,12 +1748,3 @@ product :: Num a => [a] -> a
 Prelude> product [1,2,3]
 6
 ~~~~
-
-* * * * *
-
-  -------------------------- --------------------- -----------------------------------------------
-  [Prev](chap-words.xhtml)                         [Next](chap-similarity.xhtml)
-  Chapter 2. Words           [Home](index.xhtml)   Chapter 4. Distance and similarity (proposed)
-  -------------------------- --------------------- -----------------------------------------------
-
-

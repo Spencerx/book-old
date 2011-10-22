@@ -17,7 +17,7 @@ main = hakyll $ do
     compile compressCssCompiler
   
   -- Copy images
-  match "**.png" $ do
+  match images $ do
     route   idRoute
     compile copyFileCompiler
 
@@ -32,7 +32,7 @@ main = hakyll $ do
       >>> relativizeUrlsCompiler
 
   -- Chapters
-  match (list ["Words/index.md"]) $ do
+  match (list chapters) $ do
     route   $ setExtension ".html"
     compile $ pageCompilerWith defaultParserState chapterOptions
       >>> applyTemplateCompiler "templates/book.html"
@@ -46,3 +46,6 @@ chapterOptions = defaultWriterOptions {
                    writerTableOfContents = True,
                    writerTemplate        = "<b>Table of contents</b>\n$toc$\n$body$"
                  }
+
+chapters = ["Words/index.md", "NGrams/index.md"]
+images = regex "(\\.svg$)|(\\.png$)"
