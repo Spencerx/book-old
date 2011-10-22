@@ -49,7 +49,7 @@ model in which we only look at one word at a time. The sentence
 Colorless green ideas sleep furiously, for instance, contains five
 unigrams: “colorless”, “green”, “ideas”, “sleep”, and “furiously”. Of
 course, this is not very informative, as these are just the words that
-form the sentence. In fact, N-grams start to become interesting when n
+form the sentence. In fact, n-grams start to become interesting when n
 is two (a bigram) or greater. Let us start with bigrams.
 
 # Bigrams
@@ -71,7 +71,7 @@ To stick to our ‘window’ analogy, we could say that all bigrams of a
 sentence can be found by placing a window on its first two words, and by
 moving this window to the right one word at a time in a stepwise manner.
 We then repeat this procedure, until the window covers the last two
-words of a sentence. In fact, the same holds for unigrams and N-grams
+words of a sentence. In fact, the same holds for unigrams and n-grams
 with n greater than two. So, say we have a body of text represented as a
 list of words or tokens (whatever you prefer). For the sake of legacy,
 we will stick to a list of tokens representing the sentence Colorless
