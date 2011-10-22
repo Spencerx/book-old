@@ -1,8 +1,12 @@
 body {
   width: 800px;
   margin: 0px auto;
+  font: large/1.75 'Gill Sans', 'Gill Sans MT', Corbel, Helvetica, 'Nimbus Sans L', sans-serif;
+ /* font-family: verdana, arial, helvetica, sans-serif;*/
+}
 
-  font-family: verdana, arial, helvetica, sans-serif;
+pre, code {
+  font: medium/2.154 Consolas, 'Andale Mono', Monaco, 'Liberation Mono', 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', monospace;
 }
 
 a {
