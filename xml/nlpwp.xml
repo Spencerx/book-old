@@ -41,4 +41,5 @@
     <xi:include href="chap-reglang.xml"/>
     <xi:include href="chap-cfg.xml"/>
     <xi:include href="chap-performance.xml"/>
+    <xi:include href="apdx-contributors.xml"/>
 </book>

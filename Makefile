@@ -4,7 +4,8 @@ XML=xml/nlpwp.xml \
 	xml/chap-words.xml \
 	xml/chap-ngrams.xml \
 	xml/chap-classification.xml \
-	xml/chap-tagging.xml
+	xml/chap-tagging.xml \
+	xml/apdx-contributors.xml
 
 BOOKXML=xml/nlpwp.xml
 
